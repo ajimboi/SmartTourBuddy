@@ -17,7 +17,7 @@ import tensorflow_hub as hub
 import numpy as np
 
 model_url = 'https://www.kaggle.com/models/google/landmarks/frameworks/TensorFlow1/variations/classifier-asia-v1/versions/1'
-labels_path = 'C:\\Users\\jim\\Downloads\\landmarks_classifier_asia_V1_label_map.csv'
+labels_path = 'landmarks_classifier_asia_V1_label_map.csv'
 API_KEY = "f3fb48eee276708e3fd68a637ee86b63"
 panda = pd.read_csv(labels_path)
 labels = dict(zip(panda.id, panda.name))
@@ -28,7 +28,7 @@ app = Flask(__name__)
 app.secret_key = b'\xe4\xad\x0c(!<\x1dhs\xcdG\xbc\xc8\x8c\xe3\xc8\xf1\xe2\xeb\x0f#\xac5\xab'
 ocr_text = ""
 image_url = '' 
-df = pd.read_csv('C:\\Users\\jim\\Desktop\\ayam\\locations.csv', sep=',')
+df = pd.read_csv('locations.csv', sep=',')
 geolocator = Nominatim(user_agent="Trips")
 
 # Clustering using KMeans
@@ -130,8 +130,8 @@ def upload_image_landmark():
             results = search.get_dict()
             if "images_results" in results:
                 image_url = results["images_results"][0]["original"]
+
             input_city = city
-            
             coordinates = get_coordinates(input_city)
             if coordinates:
                 latitude, longitude = coordinates
@@ -139,11 +139,6 @@ def upload_image_landmark():
 
             temperature = weather_data['main']['temp']
             description = weather_data['weather'][0]['description']
-
-            print("/landmark teemp")
-            print(temperature)
-            print("/landmark description")
-            print(description)
 
             
             input_cluster = df.loc[df['location'] == input_city, 'loc_clusters'].values[0]
@@ -213,10 +208,7 @@ def upload_image():
         
         temperature = weather_data['main']['temp']
         description = weather_data['weather'][0]['description']
-        print("/ocr teemp")
-        print(temperature)
-        print("/ocr description")
-        print(description)
+
         
 
         # Check if the input_city exists in the DataFrame
@@ -399,4 +391,4 @@ def place():
         
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='localhost', port=5000)
